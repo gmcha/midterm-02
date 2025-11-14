@@ -28,18 +28,34 @@ class ChangeDetection:
         self.title = ''
         self.text = ''
         change_flag = 0
+        newly_detected_names = [] #added
+
         i = 0
         while i < len(self.result_prev):
             if self.result_prev[i]==0 and detected_current[i]==1 :
                 change_flag = 1
-                self.title = names[i]
-                self.text += names[i] + ", "
+                # self.title = names[i]
+                # self.text += names[i] + ", "
+                newly_detected_names.append(names[i]) # added
             i += 1
 
         self.result_prev = detected_current[:]
 
-        if change_flag==1:
-            self.send(save_dir, image)
+        if change_flag==0:
+            return
+
+        # -- added --
+        if 'book' in newly_detected_names:
+            self.title = "book!"
+            self.text = "book! 책이 등장했습니다. 빨리 가지러 가세요."
+        else:
+            self.title = newly_detected_names[0] 
+            self.text = ", ".join(newly_detected_names) + " (이)가 새로 검출되었습니다."
+        # --- 
+
+        # if change_flag==1:
+        #     self.send(save_dir, image)
+        self.send(save_dir, image) # added
 
     def send(self, save_dir, image):
         now = datetime.now()

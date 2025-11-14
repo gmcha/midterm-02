@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -36,6 +38,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         Post post = postList.get(position);
         holder.imageView.setImageBitmap(post.getImageBitmap());
 
+        // --- added ---
+        if ("book!".equals(post.getTitle())) {
+            holder.textViewTitleOverlay.setVisibility(View.VISIBLE);
+        } else {
+            holder.textViewTitleOverlay.setVisibility(View.GONE);
+        }
+        // ---
+
         // 추가: 이미지를 클릭할 때 동작하는 함수
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +68,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+        TextView textViewTitleOverlay; // added
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem); // item_image.xml에 있는 ImageView
+            // added
+            textViewTitleOverlay = itemView.findViewById(R.id.textViewTitleOverlay);
         }
     }
 }
